@@ -10,11 +10,13 @@ import (
 
 func main() {
 	a := app.New()
-	w := a.NewWindow("AutoSync - Backup")
+	w := a.NewWindow("AutoSync")
 	icon, _ := fyne.LoadResourceFromPath("assets/icon.png")
 	w.SetIcon(icon)
 
-	label := widget.NewLabel("")
+	label := widget.NewLabel("AutoSync - a program to backup your files automatically and send them to the cloud.")
+
+	errorLabel := widget.NewLabel("teste")
 
 	dirLabel := widget.NewLabel("")
 
@@ -25,6 +27,7 @@ func main() {
 			}
 		}, w).Show()
 	})
+	numberOfBackups := widget.NewEntry()
 
 	button := widget.NewButton("Backup", func() {
 		label.SetText("Status: Backup in progress...")
@@ -32,11 +35,12 @@ func main() {
 
 	content := container.NewVBox(
 		label,
+		errorLabel,
 		dirLabel,
 		selectButton,
+		numberOfBackups,
 		button,
 	)
-
 
 	w.SetContent(content)
 	w.Resize(fyne.NewSize(800, 600))
