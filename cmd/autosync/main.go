@@ -1,6 +1,8 @@
 package main
 
 import (
+	"strconv"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
@@ -18,16 +20,45 @@ func main() {
 
 	errorLabel := widget.NewLabel("teste")
 
-	dirLabel := widget.NewLabel("")
+	dirLabel := widget.NewLabel("Selected Directory: None")
 
-	selectButton := widget.NewButton("Select Directory", func() {
+	selectDirButton := widget.NewButton("Select Directory", func() {
 		dialog.NewFolderOpen(func(uri fyne.ListableURI, err error) {
 			if err == nil && uri != nil {
 				dirLabel.SetText(uri.Path())
 			}
 		}, w).Show()
 	})
+	dirToBackupRow := container.NewHBox(
+		selectDirButton,
+		dirLabel,
+	)
+
+	numberOfBackupsLabel := widget.NewLabel("Number of Backups:")
 	numberOfBackups := widget.NewEntry()
+	numberOfBackupsRow := container.NewHBox(
+		numberOfBackupsLabel,
+		numberOfBackups,
+	)
+
+	numberOfBackups.Validator = func(s string) error {
+		_, err := strconv.Atoi(s)
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+	numberOfBackups.OnChanged = func(s string) {
+
+		if s == "" {
+			return
+		}
+
+		lastChar := s[len(s)-1:]
+		if _, err := strconv.Atoi(lastChar); err != nil {
+			numberOfBackups.SetText(s[:len(s)-1])
+		}
+	}
 
 	button := widget.NewButton("Backup", func() {
 		label.SetText("Status: Backup in progress...")
@@ -36,9 +67,8 @@ func main() {
 	content := container.NewVBox(
 		label,
 		errorLabel,
-		dirLabel,
-		selectButton,
-		numberOfBackups,
+		dirToBackupRow,
+		numberOfBackupsRow,
 		button,
 	)
 
