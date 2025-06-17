@@ -38,6 +38,7 @@ func RunApplication() {
 		components.ErrorLabel,
 		components.DirToBackupRow,
 		components.NumberOfBackupsRow,
+		components.DateFormatRow,
 		components.BackupButton,
 	)
 

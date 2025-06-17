@@ -18,6 +18,7 @@ type AppComponents struct {
 	BackupButton       *widget.Button
 	DirToBackupRow     *fyne.Container
 	NumberOfBackupsRow *fyne.Container
+	DateFormatRow      *fyne.Container
 }
 
 func CreateComponents(cfg config.Config) *AppComponents {
@@ -34,6 +35,20 @@ func CreateComponents(cfg config.Config) *AppComponents {
 
 	numberOfBackupsRow := container.NewHBox(numberOfBackupsLabel, numberOfBackups)
 
+	dateFormats := []string{
+		"dd/MM/yyyy",
+		"MM/dd/yyyy",
+		"yyyy-MM-dd",
+		"dd-MM-yyyy",
+	}
+	dateFormatLabel := widget.NewLabel("Date Format: ")
+	dateFormatSelect := widget.NewSelect(dateFormats, func(selected string) {
+		// Callback to handle date format selection
+	})
+	dateFormatSelect.SetSelectedIndex(0)
+
+	dateFormatRow := container.NewHBox(dateFormatLabel, dateFormatSelect)
+
 	button := widget.NewButton("Backup", nil) // callback será definido depois
 
 	return &AppComponents{
@@ -45,6 +60,7 @@ func CreateComponents(cfg config.Config) *AppComponents {
 		BackupButton:       button,
 		DirToBackupRow:     dirToBackupRow,
 		NumberOfBackupsRow: numberOfBackupsRow,
+		DateFormatRow:      dateFormatRow,
 	}
 }
 
