@@ -36,6 +36,7 @@ func RunApplication() {
 	content := container.NewVBox(
 		components.Label,
 		components.ErrorLabel,
+		components.RemoteNameRow,
 		components.DirToBackupRow,
 		components.NumberOfBackupsRow,
 		components.DateFormatRow,

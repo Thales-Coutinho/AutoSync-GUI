@@ -12,8 +12,13 @@ import (
 type AppComponents struct {
 	Label              *widget.Label
 	ErrorLabel         *widget.Label
-	DirLabel           *widget.Label
+	RemoteNameLabel    *widget.Label
+	RemoteNameEntry    *widget.Entry
+	ReotePathLabel     *widget.Label
+	RemotePathEntry    *widget.Entry
+	RemoteNameRow      *fyne.Container
 	SelectDirButton    *widget.Button
+	DirLabel           *widget.Label
 	NumberOfBackups    *widget.Entry
 	BackupButton       *widget.Button
 	DirToBackupRow     *fyne.Container
@@ -26,14 +31,29 @@ func CreateComponents(cfg config.Config) *AppComponents {
 	errorLabel := widget.NewLabel("teste")
 	dirLabel := widget.NewLabel("Selected Directory: None")
 
-	selectDirButton := widget.NewButton("Select Directory", nil) // callback será definido depois
+	RemoteNameLabel := widget.NewLabel("Remote Name:")
+	RemoteNameEntry := container.NewGridWrap(fyne.NewSize(100, 40), widget.NewEntry())
+	RemotePathLabel := widget.NewLabel("Remote Path:")
+	RemotePathEntry := container.NewGridWrap(fyne.NewSize(100, 40), widget.NewEntry())
+
+	RemoteNameRow := container.NewHBox(
+		RemoteNameLabel,
+		RemoteNameEntry,
+		RemotePathLabel,
+		RemotePathEntry,
+	)
+
+	selectDirButton := widget.NewButton("Select Directory", nil)
 	dirToBackupRow := container.NewHBox(selectDirButton, dirLabel)
 
 	numberOfBackupsLabel := widget.NewLabel("Number of Backups:")
 	numberOfBackups := widget.NewEntry()
 	numberOfBackups.SetText(strconv.Itoa(cfg.NumberOfBackups))
 
-	numberOfBackupsRow := container.NewHBox(numberOfBackupsLabel, numberOfBackups)
+	numberOfBackupsRow := container.NewHBox(
+		numberOfBackupsLabel,
+		numberOfBackups,
+	)
 
 	dateFormats := []string{
 		"dd/MM/yyyy",
@@ -54,6 +74,7 @@ func CreateComponents(cfg config.Config) *AppComponents {
 	return &AppComponents{
 		Label:              label,
 		ErrorLabel:         errorLabel,
+		RemoteNameRow:      RemoteNameRow,
 		DirLabel:           dirLabel,
 		SelectDirButton:    selectDirButton,
 		NumberOfBackups:    numberOfBackups,
