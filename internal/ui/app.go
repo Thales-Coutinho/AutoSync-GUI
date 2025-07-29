@@ -40,6 +40,7 @@ func RunApplication() {
 		components.DirToBackupRow,
 		components.NumberOfBackupsRow,
 		components.DateFormatRow,
+		components.FileNameRow,
 		components.BackupButton,
 	)
 

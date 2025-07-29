@@ -23,7 +23,11 @@ type AppComponents struct {
 	BackupButton       *widget.Button
 	DirToBackupRow     *fyne.Container
 	NumberOfBackupsRow *fyne.Container
+	CheckUseDateonName *widget.Check
 	DateFormatRow      *fyne.Container
+	FileNameLabel      *widget.Label
+	FileNameEntry      *widget.Entry
+	FileNameRow        *fyne.Container
 }
 
 func CreateComponents(cfg config.Config) *AppComponents {
@@ -63,11 +67,23 @@ func CreateComponents(cfg config.Config) *AppComponents {
 	}
 	dateFormatLabel := widget.NewLabel("Date Format: ")
 	dateFormatSelect := widget.NewSelect(dateFormats, func(selected string) {
-		// Callback to handle date format selection
 	})
 	dateFormatSelect.SetSelectedIndex(0)
 
-	dateFormatRow := container.NewHBox(dateFormatLabel, dateFormatSelect)
+	CheckUseDateonName := widget.NewCheck("Use Date in File Name", func(checked bool) {
+		ChangedateFormatSelect(checked, dateFormatSelect)
+	})
+	dateFormatRow := container.NewHBox(
+		CheckUseDateonName,
+		dateFormatLabel,
+		dateFormatSelect,
+	)
+	FileNameLabel := widget.NewLabel("File Name:")
+	FileNameEntry := container.NewGridWrap(fyne.NewSize(100, 40), widget.NewEntry())
+	FileNameRow := container.NewHBox(
+		FileNameLabel,
+		FileNameEntry,
+	)
 
 	button := widget.NewButton("Backup", nil) // callback será definido depois
 
@@ -81,7 +97,9 @@ func CreateComponents(cfg config.Config) *AppComponents {
 		BackupButton:       button,
 		DirToBackupRow:     dirToBackupRow,
 		NumberOfBackupsRow: numberOfBackupsRow,
+		CheckUseDateonName: CheckUseDateonName,
 		DateFormatRow:      dateFormatRow,
+		FileNameRow:        FileNameRow,
 	}
 }
 
@@ -100,5 +118,13 @@ func SetupNumberValidation(entry *widget.Entry) {
 		if _, err := strconv.Atoi(lastChar); err != nil {
 			entry.SetText(s[:len(s)-1])
 		}
+	}
+}
+
+func ChangedateFormatSelect(checked bool, dateFormatSelect *widget.Select) {
+	if checked {
+		dateFormatSelect.Enable()
+	} else {
+		dateFormatSelect.Disable()
 	}
 }
