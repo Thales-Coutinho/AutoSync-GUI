@@ -19,10 +19,10 @@ func RunApplication() {
 	if err := config.InitConfigDir(); err != nil {
 		log.Fatal("Error creating config dir:", err)
 	}
+
 	cfg, err := config.Load()
 	if err != nil {
 		log.Printf("Warning loading config: %v", err)
-		cfg = config.Config{NumberOfBackups: 5}
 	}
 
 	components := CreateComponents(cfg)

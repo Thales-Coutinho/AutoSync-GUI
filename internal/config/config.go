@@ -8,8 +8,12 @@ import (
 )
 
 type Config struct {
-	NumberOfBackups int    `json:"number_of_backups"`
+	RemoteName      string `json:"remote_name"`
+	RemotePath      string `json:"remote_path"`
 	BackupDir       string `json:"backup_dir"`
+	NumberOfBackups int    `json:"number_of_backups"`
+	DateFormat      string `json:"date_format"`
+	FileName        string `json:"file_name"`
 }
 
 func GetConfigPath() string {
@@ -22,11 +26,16 @@ func InitConfigDir() error {
 }
 
 func Load() (Config, error) {
+	defaultValues := Config{
+		RemotePath:      "/",
+		NumberOfBackups: 5,
+		BackupDir:       "Selected Directory: None",
+	}
 	configPath := GetConfigPath()
 	data, err := os.ReadFile(configPath)
 	if err != nil {
 		if os.IsNotExist(err) {
-			return Config{NumberOfBackups: 5}, nil // Default value
+			return defaultValues, nil
 		}
 		return Config{}, err
 	}

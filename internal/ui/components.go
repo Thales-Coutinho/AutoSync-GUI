@@ -33,12 +33,14 @@ type AppComponents struct {
 func CreateComponents(cfg config.Config) *AppComponents {
 	label := widget.NewLabel("AutoSync - a program to backup your files automatically and send them to the cloud.")
 	errorLabel := widget.NewLabel("teste")
-	dirLabel := widget.NewLabel("Selected Directory: None")
+	dirLabel := widget.NewLabel(cfg.BackupDir)
 
 	RemoteNameLabel := widget.NewLabel("Remote Name:")
 	RemoteNameEntry := container.NewGridWrap(fyne.NewSize(100, 40), widget.NewEntry())
 	RemotePathLabel := widget.NewLabel("Remote Path:")
-	RemotePathEntry := container.NewGridWrap(fyne.NewSize(100, 40), widget.NewEntry())
+	entry := widget.NewEntry()
+	entry.SetText(cfg.RemotePath)
+	RemotePathEntry := container.NewGridWrap(fyne.NewSize(100, 40), entry)
 
 	RemoteNameRow := container.NewHBox(
 		RemoteNameLabel,
